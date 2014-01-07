@@ -1,5 +1,5 @@
 /**
- *    Copyright © 2013 Konstantin "Stan" Livitski
+ *    Copyright © 2014 Konstantin "Stan" Livitski
  * 
  *    This file is part of proper2. Proper2 is
  *    licensed under the Apache License, Version 2.0 (the "License");
@@ -18,35 +18,35 @@ package name.livitski.tools.proper2;
 
 
 /**
- * Parses and stores a setting with an integer value.
+ * Parses and stores a setting with a long value.
  */
-public abstract class IntegerSetting<D> extends AbstractSetting<D, Integer>
+public abstract class LongSetting<D> extends AbstractSetting<D, Long>
 {
  /**
   * @param name the key of this setting in the configuration file
   */
- public IntegerSetting(String name)
+ public LongSetting(String name)
  {
   super(name);
  }
 
  @Override
- public Class<Integer> getType()
+ public Class<Long> getType()
  {
-  return Integer.class;
+  return Long.class;
  }
 
  @Override
- public Integer getValue() throws ConfigurationException
+ public Long getValue() throws ConfigurationException
  {
   try
   {
-   return Integer.valueOf((String)valueString);
+   return Long.valueOf((String)valueString);
   }
   catch (NumberFormatException e)
   {
    throw new ConfigurationException(
-     this + " encountered an invalid integer \"" + valueString + '"', e);
+     this + " encountered an invalid long integer \"" + valueString + '"', e);
   }
  }
 }
