@@ -1,5 +1,5 @@
 /**
- *    Copyright © 2013 Konstantin "Stan" Livitski
+ *    Copyright © 2013, 2014 Konstantin "Stan" Livitski
  * 
  *    This file is part of proper2. Proper2 is
  *    licensed under the Apache License, Version 2.0 (the "License");
@@ -97,6 +97,47 @@ public class Configuration
  {
   D setting = findSetting(clazz, config);
   return setting.getValue();
+ }
+
+ /**
+  * Reads a specific setting from this container and uses a dynamic handler
+  * to convert it to the appropriate data type. This method should not be called on
+  * a {@link #isCachingEnabled() non-caching} settings container, since
+  * it will read the entire properties file for each setting fetched.
+  * When {@link #isCachingEnabled() caching is disabled}, use the
+  * {@link #readSetting(Class, Properties) two-argument version} of this
+  * method instead.
+  * @param <T> the data type of the values contained in this setting  
+  * @param <D> the class that defines the setting to be read
+  * @param handler the dynamic handler object that will read and convert
+  * the setting. The configuration will hold no references to the handler
+  * after this method terminates. 
+  * @return the setting's value read
+  * @throws ConfigurationException if there was an error reading the
+  * settings or the setting read was invalid or, for a required setting,
+  * missing
+  */
+ public <T, D extends AbstractSetting<D,T>> T readSetting(AbstractSetting<D,T> handler)
+   throws ConfigurationException
+ {
+   return readSetting(handler, readConfiguration());
+ }
+
+ /**
+  * A version of {@link #readSetting(AbstractSetting)} for use with
+  * {@link #isCachingEnabled() non-caching} settings containers.
+  * Call {@link #readConfiguration()} first, then use the return
+  * value to read all the settings needed.
+  * @param handler the dynamic handler object that will read and convert
+  * the setting. The configuration will hold no references to the handler
+  * after this method terminates. 
+  * @param config the object returned from {@link #readConfiguration()}
+  */
+ public <T, D extends AbstractSetting<D,T>> T readSetting(AbstractSetting<D,T> handler, Properties config)
+ 	throws ConfigurationException
+ {
+  handler.load(config);
+  return handler.getValue();
  }
 
  /**

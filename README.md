@@ -1,5 +1,5 @@
 <!--
- |    Copyright © 2013 Konstantin "Stan" Livitski
+ |    Copyright © 2013, 2014 Konstantin "Stan" Livitski
  | 
  |    This file is part of proper2. Proper2 is
  |    licensed under the Apache License, Version 2.0 (the "License");
@@ -57,8 +57,12 @@ Using proper2
 Defining handlers for settings
 ------------------------------
 
-Proper2 expects applications to define concrete classes for all configuration
-settings they need to access. These classes are called _handler classes_. All
+Early versions of proper2 expected applications to define concrete classes
+for all configuration settings they needed to access. Those classes were
+called _handler classes_. The use of concrete handler classes is still
+considered a common pattern within proper2 applications, though as of the
+May 2014 version of the library, you can also apply dynamic handlers to
+read multiple properties using objects of the same class. All
 handler classes inherit from `name.livitski.tools.proper2.AbstractSetting`.
 A handler class supplies proper2 with the following information:
  
@@ -71,7 +75,8 @@ A handler class supplies proper2 with the following information:
  - whether or not the library is allowed to cache the handler (along with
  the value of its respective setting it may contain) 
  
-Each concrete handler class must have a default (no-args) constructor. 
+Concrete handler classes instantiated by proper2 must have a default (no-args)
+constructor. 
 
 In most cases, applications do not have to provide all of the above information
 for each setting they have. Proper2 has a number of template handler superclasses
